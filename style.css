@@ -331,6 +331,16 @@ a { text-decoration:none; color:inherit; }
     transform: translateY(-2px);
 }
 
+.hero-projects {
+    margin-top: 1.5rem;
+    font-size: 0.92rem;
+    color: var(--text-2);
+    line-height: 1.9;
+    animation: fadeUp 0.8s var(--ease-out) 0.8s both;
+}
+.hero-projects span { margin: 0 0.4rem; color: var(--text-3); }
+.hero-projects a { white-space: nowrap; }
+
 /* — Photo — */
 .hero-visual {
     display: flex;
@@ -796,7 +806,16 @@ a { text-decoration:none; color:inherit; }
     margin-top: 0.25rem;
 }
 
-.project-actions { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; }
+.project-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
+.btn-sm { padding: 0.7rem 1.2rem; font-size: 0.72rem; }
+
+/* Lien vers un projet dans le texte (parcours) */
+.inline-link {
+    color: var(--gold);
+    font-weight: 500;
+    border-bottom: 1px solid currentColor;
+}
+.inline-link:hover { color: var(--text-1); }
 
 .btn-hint {
     font-size: 0.68rem;

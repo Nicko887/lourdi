@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnostic SI d'une PME : faut-il passer à un ERP ? | Cas d'étude — Lourdi Mendes</title>
+    <meta name="description" content="Cas d'étude de Lourdi Mendes : diagnostic du système d'information d'une PME fictive de 45 salariés. Cartographie applicative, 3 processus BPMN, matrice des irritants, 3 scénarios comparés et feuille de route ERP sur 18 mois.">
+    <meta name="author" content="Lourdi Mendes">
+    <link rel="canonical" href="https://lourdi-mendes.fr/projets/diagnostic-si/">
+    <meta name="theme-color" content="#f9f6f1">
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:url" content="https://lourdi-mendes.fr/projets/diagnostic-si/">
+    <meta property="og:title" content="Diagnostic SI d'une PME : faut-il passer à un ERP ? — Lourdi Mendes">
+    <meta property="og:description" content="Cartographie applicative, processus BPMN, matrice des irritants, scénarios et feuille de route sur 18 mois. Cas d'étude, entreprise fictive.">
+    <meta property="og:image" content="https://lourdi-mendes.fr/lourdi.jpg">
+    <meta name="twitter:card" content="summary">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+    <script data-goatcounter="https://lourdi-mendes.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+
+    <style>
+        body { background: var(--bg); }
+        .cs-wrap { max-width: 1040px; margin: 0 auto; padding: 0 2rem; }
+        .cs-top {
+            display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+            padding: 1.5rem 0; border-bottom: 1px solid var(--border);
+        }
+        .cs-back { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); }
+        .cs-back:hover { color: var(--text-1); }
+        .btn-sm { padding: 0.6rem 1.1rem; font-size: 0.72rem; }
+
+        .cs-hero { padding: 3.5rem 0 2.5rem; }
+        .cs-badge {
+            display: inline-block; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+            color: var(--cyan); background: var(--cyan-dim); border: 1px solid rgba(42,126,116,0.25);
+            padding: 0.3rem 0.8rem; border-radius: 100px; margin-bottom: 1.25rem;
+        }
+        .cs-hero h1 { font-family: var(--font-serif); font-weight: 300; font-size: clamp(2.3rem, 4.5vw, 3.6rem); line-height: 1.08; margin-bottom: 1rem; }
+        .cs-hero h1 em { color: var(--gold); }
+        .cs-lead { font-size: 1.08rem; color: var(--text-2); max-width: 760px; line-height: 1.75; }
+        .cs-meta { margin-top: 1rem; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.04em; color: var(--text-3); }
+
+        .cs-kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-top: 2rem; }
+        .cs-kpis > div { background: #fff; padding: 1.1rem 1.2rem; }
+
+        .cs-toc { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; }
+        .cs-toc a { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-2); border: 1px solid var(--border-light); padding: 0.4rem 0.8rem; border-radius: var(--radius); }
+        .cs-toc a:hover { color: var(--gold); border-color: var(--gold); }
+
+        .cs-section { padding: 3.25rem 0; border-top: 1px solid var(--border); }
+        .cs-section h2 { font-family: var(--font-serif); font-weight: 400; font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.15; margin-bottom: 0.75rem; }
+        .cs-section h2 .num { font-family: var(--font-mono); font-size: 0.8rem; color: var(--gold); letter-spacing: 0.1em; display: block; margin-bottom: 0.4rem; }
+        .cs-section h3 { font-size: 1.05rem; font-weight: 500; margin: 1.75rem 0 0.6rem; }
+        .cs-section p { color: var(--text-2); line-height: 1.75; max-width: 800px; margin-bottom: 0.9rem; }
+        .cs-section p strong, .cs-section li strong { color: var(--text-1); }
+        .cs-section ul, .cs-section ol { color: var(--text-2); line-height: 1.7; padding-left: 1.2rem; margin-bottom: 1rem; max-width: 820px; }
+        .cs-section li { margin-bottom: 0.35rem; }
+
+        .cs-table-wrap { overflow-x: auto; margin: 1rem 0 0.5rem; border: 1px solid var(--border); border-radius: var(--radius-lg); background: #fff; }
+        .cs-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 640px; }
+        .cs-table th { text-align: left; font-family: var(--font-mono); font-weight: 400; font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-3); background: var(--bg); padding: 0.75rem 0.9rem; border-bottom: 1px solid var(--border-light); }
+        .cs-table td { padding: 0.75rem 0.9rem; border-bottom: 1px solid var(--border); color: var(--text-2); vertical-align: top; line-height: 1.55; }
+        .cs-table tr:last-child td { border-bottom: none; }
+        .cs-table td:first-child { color: var(--text-1); }
+        .cs-table .total td { font-weight: 500; color: var(--text-1); background: var(--bg); }
+        .cs-table .reco td { background: rgba(42,126,116,0.06); }
+        .tag-i { display: inline-block; min-width: 2rem; text-align: center; font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; color: #fff; background: #b3261e; border-radius: 100px; padding: 0.1rem 0.45rem; }
+        .lvl { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; }
+        .lvl.hi { color: #b3261e; } .lvl.mid { color: #8a5a00; } .lvl.lo { color: var(--text-3); }
+
+        .quotes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.25rem; }
+        .quote { background: #fff; border: 1px solid var(--border); border-left: 2px solid var(--gold-light); border-radius: var(--radius-lg); padding: 1.1rem 1.2rem; }
+        .quote p { font-family: var(--font-serif); font-style: italic; font-size: 1.12rem; color: var(--text-1); line-height: 1.45; margin-bottom: 0.6rem; }
+        .quote span { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-3); }
+
+        .steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-top: 1.25rem; }
+        .steps > div { background: #fff; padding: 1.1rem; }
+        .steps b { display: block; font-family: var(--font-mono); font-weight: 400; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.35rem; }
+        .steps strong { display: block; font-size: 0.95rem; font-weight: 500; margin-bottom: 0.3rem; }
+        .steps span { font-size: 0.85rem; color: var(--text-2); line-height: 1.5; }
+
+        .diagram { background: #fff; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1rem; margin: 1rem 0 0.5rem; overflow-x: auto; }
+        .diagram svg { display: block; width: 100%; height: auto; min-width: 760px; }
+        .diagram-note { font-size: 0.85rem !important; color: var(--text-3) !important; }
+
+        .tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1.25rem; }
+        .tabs button { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.5rem 1rem; border: 1px solid var(--border-light); background: transparent; color: var(--text-2); border-radius: var(--radius); cursor: pointer; }
+        .tabs button[aria-selected="true"] { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+        .tab-panel[hidden] { display: none; }
+
+        .reco-box { background: rgba(42,126,116,0.07); border: 1px solid rgba(42,126,116,0.3); border-radius: var(--radius-lg); padding: 1.25rem 1.4rem; margin: 1.25rem 0; }
+        .reco-box p { color: var(--text-1); margin: 0; }
+
+        .cs-foot { padding: 2.5rem 0 3rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; align-items: center; }
+        .cs-foot p { font-size: 0.85rem; color: var(--text-3); max-width: 640px; }
+
+        /* Éléments des schémas */
+        .d-lane { fill: #fff; stroke: var(--border-light); }
+        .d-lane-alt { fill: var(--bg); stroke: var(--border-light); }
+        .d-sep { stroke: var(--border-light); }
+        .d-lane-label { font: 500 13px 'DM Sans', sans-serif; fill: var(--text-1); }
+        .d-task { fill: #fff; stroke: #8f867a; stroke-width: 1.2; }
+        .d-box { fill: #fff; stroke: #8f867a; stroke-width: 1.2; }
+        .d-box-warn { fill: #fdf3f2; stroke: #b3261e; stroke-width: 1.2; stroke-dasharray: 5 4; }
+        .d-name { font: 500 14px 'DM Sans', sans-serif; fill: var(--text-1); }
+        .d-text { font: 12px 'DM Sans', sans-serif; fill: var(--text-1); }
+        .d-small { font: 11.5px 'DM Sans', sans-serif; fill: var(--text-2); }
+        .d-bad-text { font: 500 11.5px 'DM Sans', sans-serif; fill: #b3261e; }
+        .d-flow { fill: none; stroke: #6f675d; stroke-width: 1.3; }
+        .d-flow-bad { fill: none; stroke: #b3261e; stroke-width: 1.6; }
+        .d-flow-mail { fill: none; stroke: #6f675d; stroke-width: 1.3; stroke-dasharray: 6 4; }
+        .d-flow-none { fill: none; stroke: #a09689; stroke-width: 1.3; stroke-dasharray: 2 4; }
+        .d-event { fill: #fff; stroke: #6f675d; stroke-width: 1.5; }
+        .d-end { fill: #fff; stroke: #6f675d; stroke-width: 3; }
+        .d-gate { fill: #fff; stroke: #6f675d; stroke-width: 1.3; }
+        .d-pain { fill: #b3261e; }
+        .d-pain-t { font: 600 10px 'DM Sans', sans-serif; fill: #fff; }
+        .d-axis { stroke: #6f675d; stroke-width: 1.2; }
+        .d-grid { stroke: var(--border); }
+        .q-quick { fill: rgba(42,126,116,0.07); }
+        .q-major { fill: rgba(166,124,78,0.09); }
+        .dot-quick { fill: #2a7e74; } .dot-major { fill: #8a653b; } .dot-later { fill: #8f867a; }
+        .p0 { fill: #2a7e74; } .p1 { fill: #8a653b; } .p2 { fill: #4f6f99; } .p3 { fill: #7a5a8c; }
+
+        @media (max-width: 900px) {
+            .cs-kpis { grid-template-columns: repeat(2, 1fr); }
+            .quotes { grid-template-columns: 1fr; }
+            .steps { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 600px) { .cs-wrap { padding: 0 1.25rem; } }
+
+        @media print {
+            .cs-top .btn, .cs-toc, .tabs, .cs-foot .btn { display: none !important; }
+            .tab-panel[hidden] { display: block !important; }
+            .cs-section { break-inside: avoid-page; padding: 1.5rem 0; }
+            .diagram { break-inside: avoid; }
+            .diagram svg { min-width: 0; }
+            body { background: #fff; }
+        }
+    </style>
+</head>
+
+<body>
+<!-- Flèches partagées par tous les schémas -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#6f675d"/></marker>
+        <marker id="ar-bad" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#b3261e"/></marker>
+    </defs>
+</svg>
+
+<div class="cs-wrap">
+
+    <header class="cs-top">
+        <a class="cs-back" href="../../#projects">&larr; Portfolio de Lourdi Mendes</a>
+        <button class="btn btn-outline btn-sm" type="button" onclick="window.print()" data-goatcounter-click="diag-pdf" data-goatcounter-title="Diagnostic SI : enregistrement PDF">Enregistrer en PDF</button>
+    </header>
+
+    <main>
+    <section class="cs-hero">
+        <span class="cs-badge">Cas d'étude · entreprise fictive</span>
+        <h1>Diagnostic SI d'une PME : <em>faut-il passer à un ERP ?</em></h1>
+        <p class="cs-lead">Une PME rochelaise de 45 salariés perd des ventes, des clients et du temps à cause d'outils qui ne se parlent pas. Recommandation : un ERP intégré, déployé en 4 phases sur 18 mois, précédé de gains rapides dès le premier mois, pour un budget estimé à 31 000 € (plafond fixé : 40 000 €).</p>
+        <p class="cs-meta">Lourdi Mendes · Management des systèmes d'information · 2026</p>
+
+        <div class="cs-kpis">
+            <div><span class="kpi-value">8</span><span class="kpi-label">Irritants analysés</span></div>
+            <div><span class="kpi-value">3</span><span class="kpi-label">Processus modélisés (BPMN)</span></div>
+            <div><span class="kpi-value">8</span><span class="kpi-label">Outils cartographiés</span></div>
+            <div><span class="kpi-value">18 mois</span><span class="kpi-label">Feuille de route</span></div>
+            <div><span class="kpi-value">≈ 31 k€</span><span class="kpi-label">Budget estimé, plafond 40 k€</span></div>
+        </div>
+
+        <nav class="cs-toc" aria-label="Sommaire">
+            <a href="#cadrage">Cadrage</a>
+            <a href="#entretiens">Entretiens</a>
+            <a href="#cartographie">Cartographie</a>
+            <a href="#processus">Processus</a>
+            <a href="#irritants">Irritants</a>
+            <a href="#scenarios">Scénarios</a>
+            <a href="#feuille-de-route">Feuille de route</a>
+            <a href="#budget">Budget et risques</a>
+        </nav>
+    </section>
+
+    <!-- 1. CADRAGE -->
+    <section class="cs-section" id="cadrage">
+        <h2><span class="num">01 · Cadrage</span>La demande et le périmètre</h2>
+        <p><strong>Atlantique Nautic Services (ANS)</strong>, La Rochelle, 45 salariés, 6,2 M€ de chiffre d'affaires. Trois activités : vente d'accessoires nautiques (boutique et site web), entretien et hivernage de bateaux (atelier), location de petits bateaux l'été.</p>
+        <p><strong>La demande de la gérante :</strong> « Dois-je passer à un ERP, et par où commencer ? » Contrainte : 40 000 € maximum sur 18 mois.</p>
+
+        <div class="cs-table-wrap">
+            <table class="cs-table">
+                <thead><tr><th>Élément de cadrage</th><th>Contenu</th></tr></thead>
+                <tbody>
+                    <tr><td>Objectif</td><td>Identifier les causes SI des dysfonctionnements et recommander un scénario chiffré et priorisé.</td></tr>
+                    <tr><td>Périmètre</td><td>Vente boutique et web, prestations atelier, stock et approvisionnement, comptabilité, relation client. Hors périmètre : paie, location saisonnière.</td></tr>
+                    <tr><td>Parties prenantes</td><td>Claire (gérante, commanditaire), Marc (atelier, 18 pers.), Sophie (boutique, 12), Karim (logistique, 6), Nadia (comptabilité, 5), Julien (site web, 3), Thomas (référent informatique à mi-temps).</td></tr>
+                    <tr><td>Livrables</td><td>Synthèse des entretiens, cartographie applicative, 3 processus BPMN, matrice des irritants, scénarios comparés, feuille de route et budget.</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Démarche en 5 étapes</h3>
+        <div class="steps">
+            <div><b>Étape 1</b><strong>Cadrer</strong><span>Objectifs, périmètre, parties prenantes, grille d'entretien.</span></div>
+            <div><b>Étape 2</b><strong>Écouter</strong><span>6 entretiens, un par responsable de service.</span></div>
+            <div><b>Étape 3</b><strong>Cartographier</strong><span>Outils, flux de données, processus actuels.</span></div>
+            <div><b>Étape 4</b><strong>Analyser</strong><span>Irritants, causes SI, priorisation impact × effort.</span></div>
+            <div><b>Étape 5</b><strong>Recommander</strong><span>Scénarios, feuille de route, budget, risques.</span></div>
+        </div>
+    </section>
+
+    <!-- 2. ENTRETIENS -->
+    <section class="cs-section" id="entretiens">
+        <h2><span class="num">02 · Entretiens</span>Ce que disent les équipes</h2>
+        <p>Les 6 entretiens, simulés à partir du scénario, convergent : chaque service compense par des ressaisies manuelles l'absence de lien entre ses outils.</p>
+        <div class="quotes">
+            <div class="quote"><p>« On vend en boutique un article déjà vendu sur le site le matin même. »</p><span>Sophie · Boutique</span></div>
+            <div class="quote"><p>« Un devis d'hivernage prend 3 jours, le client appelle ailleurs entre-temps. »</p><span>Marc · Atelier</span></div>
+            <div class="quote"><p>« Je ressaisis chaque facture atelier dans Sage, environ 2 jours par mois. »</p><span>Nadia · Comptabilité</span></div>
+            <div class="quote"><p>« Je ne sais jamais quel fichier de stock est le bon. »</p><span>Karim · Logistique</span></div>
+            <div class="quote"><p>« Je n'ai aucune vue sur ce qu'un client achète en boutique. »</p><span>Julien · Site web</span></div>
+            <div class="quote"><p>« Je découvre la marge du mois quand l'expert-comptable me l'envoie, le 20 du mois suivant. »</p><span>Claire · Direction</span></div>
+        </div>
+    </section>
+
+    <!-- 3. CARTOGRAPHIE -->
+    <section class="cs-section" id="cartographie">
+        <h2><span class="num">03 · Cartographie applicative</span>8 outils, aucun flux automatisé</h2>
+        <p>Toutes les données circulent à la main : 4 ressaisies et 1 envoi par email relient des outils qui ne communiquent pas. Le fichier de stock Excel est le point névralgique : la caisse, le site et la logistique en dépendent.</p>
+
+        <div class="diagram">
+            <svg viewBox="0 0 960 540" role="img" aria-label="Cartographie applicative actuelle d'ANS : 8 outils reliés uniquement par des ressaisies manuelles">
+                <!-- Flux -->
+                <line class="d-flow-bad" x1="220" y1="90" x2="386" y2="90" marker-end="url(#ar-bad)"/>
+                <text class="d-bad-text" x="304" y="80" text-anchor="middle">saisie manuelle</text>
+                <path class="d-flow-bad" d="M570 78 H736" marker-end="url(#ar-bad)"/>
+                <text class="d-bad-text" x="654" y="68" text-anchor="middle">mise à jour le soir</text>
+                <path class="d-flow-bad" d="M740 102 H574" marker-end="url(#ar-bad)"/>
+                <text class="d-bad-text" x="654" y="120" text-anchor="middle">commandes reportées</text>
+                <path class="d-flow-bad" d="M480 290 V396" marker-end="url(#ar-bad)"/>
+                <text class="d-bad-text" x="492" y="338">ressaisie des factures</text>
+                <text class="d-bad-text" x="492" y="354">2 jours par mois</text>
+                <path class="d-flow-mail" d="M570 430 H830 V294" marker-end="url(#ar)"/>
+                <text class="d-small" x="700" y="420" text-anchor="middle">états mensuels par email, le 20</text>
+                <path class="d-flow-none" d="M220 260 H390"/>
+                <text class="d-small" x="305" y="250" text-anchor="middle">aucun lien</text>
+
+                <!-- Outils -->
+                <rect class="d-box" x="40" y="60" width="180" height="60" rx="8"/>
+                <text class="d-name" x="130" y="86" text-anchor="middle">Caisse boutique</text>
+                <text class="d-small" x="130" y="105" text-anchor="middle">logiciel de 2014</text>
+
+                <rect class="d-box" x="390" y="60" width="180" height="60" rx="8"/>
+                <text class="d-name" x="480" y="86" text-anchor="middle">Fichier stock Excel</text>
+                <text class="d-small" x="480" y="105" text-anchor="middle">plusieurs versions</text>
+
+                <rect class="d-box" x="740" y="60" width="180" height="60" rx="8"/>
+                <text class="d-name" x="830" y="86" text-anchor="middle">Site e-commerce</text>
+                <text class="d-small" x="830" y="105" text-anchor="middle">PrestaShop</text>
+
+                <rect class="d-box" x="40" y="230" width="180" height="60" rx="8"/>
+                <text class="d-name" x="130" y="256" text-anchor="middle">Planning atelier</text>
+                <text class="d-small" x="130" y="275" text-anchor="middle">tableau blanc, agenda</text>
+
+                <rect class="d-box" x="390" y="230" width="180" height="60" rx="8"/>
+                <text class="d-name" x="480" y="256" text-anchor="middle">Devis et factures</text>
+                <text class="d-small" x="480" y="275" text-anchor="middle">atelier · Excel, Word</text>
+
+                <rect class="d-box" x="740" y="230" width="180" height="60" rx="8"/>
+                <text class="d-name" x="830" y="256" text-anchor="middle">Gmail personnels</text>
+                <text class="d-small" x="830" y="275" text-anchor="middle">pas de boîte partagée</text>
+
+                <rect class="d-box-warn" x="40" y="400" width="180" height="60" rx="8"/>
+                <text class="d-name" x="130" y="426" text-anchor="middle">Fichiers clients</text>
+                <text class="d-small" x="130" y="445" text-anchor="middle">dispersés, clés USB</text>
+
+                <rect class="d-box" x="390" y="400" width="180" height="60" rx="8"/>
+                <text class="d-name" x="480" y="426" text-anchor="middle">Sage</text>
+                <text class="d-small" x="480" y="445" text-anchor="middle">chez l'expert-comptable</text>
+
+                <!-- Légende -->
+                <line class="d-flow-bad" x1="40" y1="506" x2="80" y2="506"/>
+                <text class="d-small" x="88" y="510">ressaisie manuelle</text>
+                <line class="d-flow-mail" x1="260" y1="506" x2="300" y2="506"/>
+                <text class="d-small" x="308" y="510">échange manuel par email</text>
+                <line class="d-flow-none" x1="520" y1="506" x2="560" y2="506"/>
+                <text class="d-small" x="568" y="510">aucun lien entre outils</text>
+                <rect class="d-box-warn" x="760" y="498" width="28" height="16" rx="3"/>
+                <text class="d-small" x="796" y="510">risque RGPD</text>
+            </svg>
+        </div>
+        <p class="diagram-note">Lecture : chaque flèche rouge est une ressaisie faite par un salarié. Aucune donnée n'est partagée automatiquement entre deux outils.</p>
+    </section>
+
+    <!-- 4. PROCESSUS -->
+    <section class="cs-section" id="processus">
+        <h2><span class="num">04 · Processus actuels (BPMN)</span>Où le temps et les ventes se perdent</h2>
+        <p>Trois processus clés, modélisés tels qu'ils fonctionnent aujourd'hui. Les pastilles rouges renvoient aux irritants de la matrice (section 05).</p>
+
+        <div class="tabs" role="tablist" aria-label="Processus">
+            <button role="tab" id="tab-atelier" aria-controls="p-atelier" aria-selected="true">Prestation atelier</button>
+            <button role="tab" id="tab-vente" aria-controls="p-vente" aria-selected="false">Vente boutique et web</button>
+            <button role="tab" id="tab-appro" aria-controls="p-appro" aria-selected="false">Approvisionnement</button>
+        </div>
+
+        <!-- Processus atelier -->
+        <div class="tab-panel" id="p-atelier" role="tabpanel" aria-labelledby="tab-atelier">
+            <div class="diagram">
+                <svg viewBox="0 0 1050 400" role="img" aria-label="Processus atelier : du devis à la facture, avec 3 jours de délai et une ressaisie comptable">
+                    <rect class="d-lane" x="0" y="20" width="1040" height="110"/>
+                    <rect class="d-lane-alt" x="0" y="130" width="1040" height="120"/>
+                    <rect class="d-lane" x="0" y="250" width="1040" height="140"/>
+                    <line class="d-sep" x1="120" y1="20" x2="120" y2="390"/>
+                    <text class="d-lane-label" x="60" y="80" text-anchor="middle">Client</text>
+                    <text class="d-lane-label" x="60" y="194" text-anchor="middle">Atelier</text>
+                    <text class="d-lane-label" x="60" y="324" text-anchor="middle">Comptabilité</text>
+
+                    <path class="d-flow" d="M204 75 H320 V160" marker-end="url(#ar)"/>
+                    <path class="d-flow" d="M379 190 H389" marker-end="url(#ar)"/>
+                    <path class="d-flow" d="M450 162 V75 H556" marker-end="url(#ar)"/>
+                    <path class="d-flow" d="M602 75 H694" marker-end="url(#ar)"/>
+                    <text class="d-small" x="648" y="67" text-anchor="middle">non</text>
+                    <path class="d-flow" d="M580 97 V190 H649" marker-end="url(#ar)"/>
+                    <text class="d-small" x="590" y="150">oui</text>
+                    <path class="d-flow" d="M769 190 H779" marker-end="url(#ar)"/>
+                    <path class="d-flow" d="M899 190 H970 V290" marker-end="url(#ar)"/>
+                    <path class="d-flow" d="M970 348 V356" marker-end="url(#ar)"/>
+
+                    <circle class="d-event" cx="190" cy="75" r="14"/>
+                    <text class="d-small" x="190" y="110" text-anchor="middle">Demande de devis</text>
+
+                    <rect class="d-task" x="261" y="162" width="118" height="56" rx="8"/>
+                    <text class="d-text" x="320" y="186" text-anchor="middle">Évaluer</text>
+                    <text class="d-text" x="320" y="202" text-anchor="middle">les travaux</text>
+
+                    <rect class="d-task" x="391" y="162" width="118" height="56" rx="8"/>
+                    <text class="d-text" x="450" y="178" text-anchor="middle">Chiffrer et</text>
+                    <text class="d-text" x="450" y="194" text-anchor="middle">rédiger le devis</text>
+                    <text class="d-text" x="450" y="210" text-anchor="middle">(Excel, Word)</text>
+                    <text class="d-bad-text" x="450" y="240" text-anchor="middle">≈ 3 jours</text>
+                    <circle class="d-pain" cx="507" cy="164" r="11"/><text class="d-pain-t" x="507" y="168" text-anchor="middle">I2</text>
+
+                    <polygon class="d-gate" points="580,53 602,75 580,97 558,75"/>
+                    <text class="d-small" x="580" y="45" text-anchor="middle">Devis accepté ?</text>
+
+                    <circle class="d-end" cx="710" cy="75" r="14"/>
+                    <text class="d-small" x="710" y="110" text-anchor="middle">Client perdu</text>
+                    <circle class="d-pain" cx="728" cy="58" r="11"/><text class="d-pain-t" x="728" y="62" text-anchor="middle">I2</text>
+
+                    <rect class="d-task" x="651" y="162" width="118" height="56" rx="8"/>
+                    <text class="d-text" x="710" y="186" text-anchor="middle">Planifier sur le</text>
+                    <text class="d-text" x="710" y="202" text-anchor="middle">tableau blanc</text>
+                    <circle class="d-pain" cx="767" cy="164" r="11"/><text class="d-pain-t" x="767" y="168" text-anchor="middle">I7</text>
+
+                    <rect class="d-task" x="781" y="162" width="118" height="56" rx="8"/>
+                    <text class="d-text" x="840" y="186" text-anchor="middle">Intervenir puis</text>
+                    <text class="d-text" x="840" y="202" text-anchor="middle">facturer (Excel)</text>
+
+                    <rect class="d-task" x="911" y="292" width="118" height="56" rx="8"/>
+                    <text class="d-text" x="970" y="308" text-anchor="middle">Ressaisir</text>
+                    <text class="d-text" x="970" y="324" text-anchor="middle">la facture</text>
+                    <text class="d-text" x="970" y="340" text-anchor="middle">dans Sage</text>
+                    <text class="d-bad-text" x="900" y="324" text-anchor="end">2 jours par mois</text>
+                    <circle class="d-pain" cx="1027" cy="294" r="11"/><text class="d-pain-t" x="1027" y="298" text-anchor="middle">I3</text>
+
+                    <circle class="d-end" cx="970" cy="370" r="12"/>
+                    <text class="d-small" x="952" y="374" text-anchor="end">facture comptabilisée</text>
+                </svg>
+            </div>
+            <p class="diagram-note">Le devis, rédigé à la main à partir de tarifs dispersés, prend environ 3 jours : c'est là que des clients sont perdus. Après l'intervention, la facture est saisie deux fois.</p>
+        </div>
+
+        <!-- Processus vente -->
+        <div class="tab-panel" id="p-vente" role="tabpanel" aria-labelledby="tab-vente" hidden>
+            <div class="diagram">
+                <svg viewBox="0 0 1050 440" role="img" aria-label="Processus de vente : le stock du site n'est mis à jour que le soir, ce qui provoque des ventes en double">
+                    <rect class="d-lane" x="0" y="20" width="1040" height="100"/>
+                    <rect class="d-lane-alt" x="0" y="120" width="1040" height="100"/>
+                    <rect class="d-lane" x="0" y="220" width="1040" height="100"/>
+                    <rect class="d-lane-alt" x="0" y="320" width="1040" height="100"/>
+                    <line class="d-sep" x1="120" y1="20" x2="120" y2="420"/>
+                    <text class="d-lane-label" x="60" y="74" text-anchor="middle">Client</text>
+                    <text class="d-lane-label" x="60" y="174" text-anchor="middle">Boutique</text>
+                    <text class="d-lane-label" x="60" y="274" text-anchor="middle">Site web</text>
+                    <text class="d-lane-label" x="60" y="374" text-anchor="middle">Logistique</text>
+
+                    <path class="d-flow" d="M204 70 H320 V140" marker-end="url(#ar)"/>
+                    <path class="d-flow" d="M320 198 V370 H389" marker-end="url(#ar)"/>
+                    <path class="d-flow" d="M450 342 V270 H519" marker-end="url(#ar)"/>
+                    <path class="d-flow" d="M639 270 H649" marker-end="url(#ar)"/>
+                    <path class="d-flow" d="M594 70 H710 V240" marker-end="url(#ar)"/>
+                    <path class="d-flow" d="M769 270 H816" marker-end="url(#ar)"/>
+                    <path class="d-flow" d="M862 270 H909" marker-end="url(#ar)"/>
+                    <text class="d-small" x="885" y="290" text-anchor="middle">oui</text>
+                    <path class="d-flow" d="M840 248 V86" marker-end="url(#ar)"/>
+                    <text class="d-small" x="848" y="170">non</text>
+                    <path class="d-flow" d="M970 298 V354" marker-end="url(#ar)"/>
+
+                    <circle class="d-event" cx="190" cy="70" r="14"/>
+                    <text class="d-small" x="190" y="104" text-anchor="middle">Achat en boutique</text>
+
+                    <rect class="d-task" x="261" y="142" width="118" height="56" rx="8"/>
+                    <text class="d-text" x="320" y="166" text-anchor="middle">Encaisser</text>
+                    <text class="d-text" x="320" y="182" text-anchor="middle">(caisse de 2014)</text>
+
+                    <rect class="d-task" x="391" y="342" width="118" height="56" rx="8"/>
+                    <text class="d-text" x="450" y="358" text-anchor="middle">Reporter les</text>
+                    <text class="d-text" x="450" y="374" text-anchor="middle">ventes dans le</text>
+                    <text class="d-text" x="450" y="390" text-anchor="middle">stock Excel</text>
+                    <circle class="d-pain" cx="507" cy="344" r="11"/><text class="d-pain-t" x="507" y="348" text-anchor="middle">I4</text>
+
+                    <rect class="d-task" x="521" y="242" width="118" height="56" rx="8"/>
+                    <text class="d-text" x="580" y="266" text-anchor="middle">Mettre à jour</text>
+                    <text class="d-text" x="580" y="282" text-anchor="middle">le site, le soir</text>
+                    <text class="d-bad-text" x="580" y="314" text-anchor="middle">décalage de plusieurs heures</text>
+                    <circle class="d-pain" cx="637" cy="244" r="11"/><text class="d-pain-t" x="637" y="248" text-anchor="middle">I1</text>
+
+                    <circle class="d-event" cx="580" cy="70" r="14"/>
+                    <text class="d-small" x="580" y="104" text-anchor="middle">Commande en ligne</text>
+
+                    <rect class="d-task" x="651" y="242" width="118" height="56" rx="8"/>
+                    <text class="d-text" x="710" y="266" text-anchor="middle">Vérifier le</text>
+                    <text class="d-text" x="710" y="282" text-anchor="middle">stock (Excel)</text>
+
+                    <polygon class="d-gate" points="840,248 862,270 840,292 818,270"/>
+                    <text class="d-small" x="840" y="312" text-anchor="middle">En stock ?</text>
+
+                    <circle class="d-end" cx="840" cy="70" r="14"/>
+                    <text class="d-small" x="862" y="74">Commande annulée</text>
+                    <circle class="d-pain" cx="822" cy="52" r="11"/><text class="d-pain-t" x="822" y="56" text-anchor="middle">I1</text>
+
+                    <rect class="d-task" x="911" y="242" width="118" height="56" rx="8"/>
+                    <text class="d-text" x="970" y="266" text-anchor="middle">Expédier</text>
+                    <text class="d-text" x="970" y="282" text-anchor="middle">la commande</text>
+
+                    <circle class="d-end" cx="970" cy="370" r="14"/>
+                    <text class="d-small" x="950" y="374" text-anchor="end">Colis expédié</text>
+                </svg>
+            </div>
+            <p class="diagram-note">Le site ne connaît le stock réel qu'une fois par jour : entre-temps, un article vendu en boutique reste en vente en ligne, puis la commande est annulée.</p>
+        </div>
+
+        <!-- Processus approvisionnement -->
+        <div class="tab-panel" id="p-appro" role="tabpanel" aria-labelledby="tab-appro" hidden>
+            <div class="diagram">
+                <svg viewBox="0 0 1050 340" role="img" aria-label="Processus d'approvisionnement : repérage manuel des ruptures et mise à jour tardive du site">
+                    <rect class="d-lane" x="0" y="20" width="1040" height="100"/>
+                    <rect class="d-lane-alt" x="0" y="120" width="1040" height="100"/>
+                    <rect class="d-lane" x="0" y="220" width="1040" height="100"/>
+                    <line class="d-sep" x1="120" y1="20" x2="120" y2="320"/>
+                    <text class="d-lane-label" x="60" y="74" text-anchor="middle">Logistique</text>
+                    <text class="d-lane-label" x="60" y="174" text-anchor="middle">Fournisseur</text>
+                    <text class="d-lane-label" x="60" y="274" text-anchor="middle">Site web</text>
+
+                    <path class="d-flow" d="M204 70 H259" marker-end="url(#ar)"/>
+                    <path class="d-flow" d="M379 70 H389" marker-end="url(#ar)"/>
+                    <path class="d-flow" d="M509 70 H580 V140" marker-end="url(#ar)"/>
+                    <path class="d-flow" d="M639 170 H710 V100" marker-end="url(#ar)"/>
+                    <path class="d-flow" d="M769 70 H840 V240" marker-end="url(#ar)"/>
+                    <path class="d-flow" d="M899 270 H954" marker-end="url(#ar)"/>
+
+                    <circle class="d-event" cx="190" cy="70" r="14"/>
+                    <text class="d-small" x="190" y="104" text-anchor="middle">Contrôle du stock</text>
+
+                    <rect class="d-task" x="261" y="42" width="118" height="56" rx="8"/>
+                    <text class="d-text" x="320" y="66" text-anchor="middle">Repérer un stock</text>
+                    <text class="d-text" x="320" y="82" text-anchor="middle">bas (Excel)</text>
+                    <circle class="d-pain" cx="377" cy="44" r="11"/><text class="d-pain-t" x="377" y="48" text-anchor="middle">I4</text>
+
+                    <rect class="d-task" x="391" y="42" width="118" height="56" rx="8"/>
+                    <text class="d-text" x="450" y="66" text-anchor="middle">Commander</text>
+                    <text class="d-text" x="450" y="82" text-anchor="middle">par email</text>
+
+                    <rect class="d-task" x="521" y="142" width="118" height="56" rx="8"/>
+                    <text class="d-text" x="580" y="166" text-anchor="middle">Livrer</text>
+                    <text class="d-text" x="580" y="182" text-anchor="middle">la commande</text>
+
+                    <rect class="d-task" x="651" y="42" width="118" height="56" rx="8"/>
+                    <text class="d-text" x="710" y="58" text-anchor="middle">Réceptionner,</text>
+                    <text class="d-text" x="710" y="74" text-anchor="middle">mettre à jour</text>
+                    <text class="d-text" x="710" y="90" text-anchor="middle">l'Excel</text>
+
+                    <rect class="d-task" x="781" y="242" width="118" height="56" rx="8"/>
+                    <text class="d-text" x="840" y="266" text-anchor="middle">Mettre à jour</text>
+                    <text class="d-text" x="840" y="282" text-anchor="middle">le site, le soir</text>
+                    <circle class="d-pain" cx="897" cy="244" r="11"/><text class="d-pain-t" x="897" y="248" text-anchor="middle">I1</text>
+
+                    <circle class="d-end" cx="970" cy="270" r="14"/>
+                    <text class="d-small" x="970" y="304" text-anchor="middle">Stock à jour partout</text>
+                </svg>
+            </div>
+            <p class="diagram-note">Les ruptures sont repérées à l'œil dans un fichier dont plusieurs versions circulent, sans seuil d'alerte. Le site n'est mis à jour qu'en fin de journée.</p>
+        </div>
+    </section>
+
+    <!-- 5. IRRITANTS -->
+    <section class="cs-section" id="irritants">
+        <h2><span class="num">05 · Matrice des irritants</span>8 irritants, une cause commune</h2>
+        <p>Chaque irritant remonte à la même cause : <strong>il n'existe pas de source unique de données</strong> pour le stock, les clients et la facturation. Trois irritants peuvent être traités en quelques semaines ; quatre demandent un outil intégré.</p>
+
+        <div class="cs-table-wrap">
+            <table class="cs-table">
+                <thead><tr><th>N°</th><th>Irritant</th><th>Service</th><th>Impact</th><th>Cause SI</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="tag-i">I1</span></td><td>Article vendu deux fois (boutique et site)</td><td>Boutique, web</td><td><span class="lvl hi">Élevé</span></td><td>Caisse et site non reliés, stock du site mis à jour le soir</td></tr>
+                    <tr><td><span class="tag-i">I2</span></td><td>Devis atelier en 3 jours, clients perdus</td><td>Atelier</td><td><span class="lvl hi">Élevé</span></td><td>Devis Excel et Word, tarifs et pièces dispersés</td></tr>
+                    <tr><td><span class="tag-i">I3</span></td><td>Ressaisie des factures, 2 jours par mois</td><td>Comptabilité</td><td><span class="lvl mid">Moyen</span></td><td>Aucun flux entre facturation et comptabilité</td></tr>
+                    <tr><td><span class="tag-i">I4</span></td><td>Plusieurs versions du fichier de stock</td><td>Logistique</td><td><span class="lvl hi">Élevé</span></td><td>Excel partagé sans source de référence</td></tr>
+                    <tr><td><span class="tag-i">I5</span></td><td>Aucune vue client unique</td><td>Web, boutique</td><td><span class="lvl mid">Moyen</span></td><td>Pas de CRM, données clients dispersées</td></tr>
+                    <tr><td><span class="tag-i">I6</span></td><td>Marge du mois connue le 20 du mois suivant</td><td>Direction</td><td><span class="lvl hi">Élevé</span></td><td>Comptabilité externalisée, aucun outil de pilotage</td></tr>
+                    <tr><td><span class="tag-i">I7</span></td><td>Doubles réservations des postes atelier</td><td>Atelier</td><td><span class="lvl mid">Moyen</span></td><td>Tableau blanc et agenda non partagé</td></tr>
+                    <tr><td><span class="tag-i">I8</span></td><td>Fichiers clients sur clé USB, Gmail personnels</td><td>Tous</td><td><span class="lvl hi">Élevé (RGPD)</span></td><td>Aucune règle d'usage, comptes personnels</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Priorisation : impact × effort</h3>
+        <div class="diagram">
+            <svg viewBox="0 0 680 450" role="img" aria-label="Matrice impact effort : 3 gains rapides, 4 projets structurants, 1 irritant à planifier plus tard" style="min-width:560px; max-width:720px; margin:0 auto">
+                <rect class="q-quick" x="80" y="40" width="250" height="180"/>
+                <rect class="q-major" x="330" y="40" width="250" height="180"/>
+                <line class="d-grid" x1="330" y1="40" x2="330" y2="400"/>
+                <line class="d-grid" x1="80" y1="220" x2="580" y2="220"/>
+                <line class="d-axis" x1="80" y1="40" x2="80" y2="400"/>
+                <line class="d-axis" x1="80" y1="400" x2="580" y2="400"/>
+                <text class="d-small" x="84" y="418">faible</text>
+                <text class="d-small" x="576" y="418" text-anchor="end">élevé</text>
+                <text class="d-small" x="74" y="50" text-anchor="end">élevé</text>
+                <text class="d-small" x="74" y="398" text-anchor="end">faible</text>
+                <text class="d-lane-label" x="330" y="440" text-anchor="middle">Effort de mise en œuvre →</text>
+                <text class="d-lane-label" x="30" y="220" text-anchor="middle" transform="rotate(-90 30 220)">Impact métier →</text>
+
+                <text class="d-lane-label" x="92" y="210">Gains rapides</text>
+                <text class="d-lane-label" x="570" y="210" text-anchor="end">Projets structurants</text>
+                <text class="d-lane-label" x="92" y="390">Améliorations simples</text>
+                <text class="d-lane-label" x="570" y="390" text-anchor="end">À planifier plus tard</text>
+
+                <circle class="dot-major" cx="455" cy="58" r="13"/><text class="d-pain-t" x="455" y="62" text-anchor="middle">I1</text>
+                <text class="d-small" x="473" y="62">Double vente boutique / web</text>
+                <circle class="dot-major" cx="380" cy="94" r="13"/><text class="d-pain-t" x="380" y="98" text-anchor="middle">I2</text>
+                <text class="d-small" x="398" y="98">Devis en 3 jours</text>
+                <circle class="dot-major" cx="380" cy="184" r="13"/><text class="d-pain-t" x="380" y="188" text-anchor="middle">I3</text>
+                <text class="d-small" x="398" y="188">Ressaisie des factures</text>
+                <circle class="dot-quick" cx="230" cy="130" r="13"/><text class="d-pain-t" x="230" y="134" text-anchor="middle">I4</text>
+                <text class="d-small" x="248" y="134">Fichiers de stock multiples</text>
+                <circle class="dot-later" cx="455" cy="256" r="13"/><text class="d-pain-t" x="455" y="260" text-anchor="middle">I5</text>
+                <text class="d-small" x="473" y="260">Pas de vue client unique</text>
+                <circle class="dot-major" cx="505" cy="148" r="13"/><text class="d-pain-t" x="505" y="152" text-anchor="middle">I6</text>
+                <text class="d-small" x="523" y="152">Marge connue à J+20</text>
+                <circle class="dot-quick" cx="205" cy="184" r="13"/><text class="d-pain-t" x="205" y="188" text-anchor="middle">I7</text>
+                <text class="d-small" x="223" y="188">Planning en double</text>
+                <circle class="dot-quick" cx="170" cy="83" r="13"/><text class="d-pain-t" x="170" y="87" text-anchor="middle">I8</text>
+                <text class="d-small" x="188" y="87">Clés USB, Gmail perso</text>
+            </svg>
+        </div>
+        <p class="diagram-note">Les gains rapides (I4, I7, I8) se traitent sans ERP, dès le premier mois. Les projets structurants (I1, I2, I3, I6) justifient un outil intégré. I4 reçoit une solution provisoire en phase 0, puis définitive avec l'ERP.</p>
+    </section>
+
+    <!-- 6. SCENARIOS -->
+    <section class="cs-section" id="scenarios">
+        <h2><span class="num">06 · Scénarios</span>Trois options comparées</h2>
+        <p>Seul l'ERP intégré traite les 8 irritants tout en restant sous le plafond de 40 000 €. Les coûts sont des estimations sur 18 mois, à confirmer par des devis.</p>
+
+        <div class="cs-table-wrap">
+            <table class="cs-table">
+                <thead><tr><th>Critère</th><th>1. Optimiser l'existant</th><th>2. ERP intégré (ex. Odoo)</th><th>3. Outils spécialisés connectés</th></tr></thead>
+                <tbody>
+                    <tr><td>Principe</td><td>Relier caisse et site, fichier de stock unique, modèles de devis</td><td>Un seul outil : caisse, stock, achats, atelier, facturation, CRM</td><td>Logiciel de caisse, logiciel atelier et CRM, reliés par des connecteurs</td></tr>
+                    <tr><td>Coût estimé</td><td>≈ 14 000 €</td><td>≈ 31 000 €</td><td>≈ 48 000 € (au-delà du plafond)</td></tr>
+                    <tr><td>Délai</td><td>3 mois</td><td>18 mois, par phases</td><td>12 à 15 mois</td></tr>
+                    <tr><td>Irritants traités</td><td>4 sur 8, partiellement</td><td>8 sur 8</td><td>7 sur 8</td></tr>
+                    <tr><td>Risque</td><td>Faible, mais les causes restent</td><td>Moyen : conduite du changement</td><td>Élevé : connecteurs multiples à maintenir</td></tr>
+                    <tr class="reco"><td>Verdict</td><td>Utile comme étape transitoire</td><td><strong>Recommandé</strong></td><td>Écarté : coût et complexité</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="reco-box">
+            <p><strong>Recommandation :</strong> déployer un ERP intégré par étapes, en commençant par le stock et la caisse, sources des irritants les plus coûteux. Les mesures du scénario 1 qui ne dépendent pas de l'ERP (messagerie professionnelle, planning partagé, fichier de stock unique) sont lancées immédiatement en phase 0.</p>
+        </div>
+    </section>
+
+    <!-- 7. FEUILLE DE ROUTE -->
+    <section class="cs-section" id="feuille-de-route">
+        <h2><span class="num">07 · Feuille de route</span>18 mois, 4 phases, un point de décision</h2>
+        <p>Les gains rapides arrivent dès le premier mois. Une décision de poursuite (go / no-go) est prise à la fin de la phase 1, avant d'engager le module atelier.</p>
+
+        <div class="diagram">
+            <svg viewBox="0 0 960 380" role="img" aria-label="Feuille de route sur 18 mois : gains rapides, socle ERP, atelier, client et pilotage, avec un go no-go à la fin du mois 8">
+                <rect class="p0" x="24" y="14" width="12" height="12" rx="2"/><text class="d-small" x="42" y="24">Phase 0 · Gains rapides (M1–M2)</text>
+                <rect class="p1" x="250" y="14" width="12" height="12" rx="2"/><text class="d-small" x="268" y="24">Phase 1 · Socle ERP (M3–M8)</text>
+                <rect class="p2" x="460" y="14" width="12" height="12" rx="2"/><text class="d-small" x="478" y="24">Phase 2 · Atelier (M9–M13)</text>
+                <rect class="p3" x="660" y="14" width="12" height="12" rx="2"/><text class="d-small" x="678" y="24">Phase 3 · Client et pilotage (M14–M18)</text>
+
+                <line class="d-grid" x1="260" y1="62" x2="260" y2="352"/>
+                <line class="d-grid" x1="370" y1="62" x2="370" y2="352"/>
+                <line class="d-grid" x1="480" y1="62" x2="480" y2="352"/>
+                <line class="d-grid" x1="590" y1="62" x2="590" y2="352"/>
+                <line class="d-grid" x1="700" y1="62" x2="700" y2="352"/>
+                <line class="d-grid" x1="810" y1="62" x2="810" y2="352"/>
+                <line class="d-grid" x1="920" y1="62" x2="920" y2="352"/>
+                <text class="d-small" x="260" y="370" text-anchor="middle">M1</text>
+                <text class="d-small" x="370" y="370" text-anchor="middle">M4</text>
+                <text class="d-small" x="480" y="370" text-anchor="middle">M7</text>
+                <text class="d-small" x="590" y="370" text-anchor="middle">M10</text>
+                <text class="d-small" x="700" y="370" text-anchor="middle">M13</text>
+                <text class="d-small" x="810" y="370" text-anchor="middle">M16</text>
+                <text class="d-small" x="920" y="370" text-anchor="middle">fin M18</text>
+
+                <line class="d-grid" x1="24" y1="149" x2="920" y2="149"/>
+                <line class="d-grid" x1="24" y1="227" x2="920" y2="227"/>
+                <line class="d-grid" x1="24" y1="279" x2="920" y2="279"/>
+
+                <line x1="553.3" y1="58" x2="553.3" y2="356" stroke="#b3261e" stroke-width="1.3" stroke-dasharray="5 4"/>
+                <polygon points="553.3,44 561.3,52 553.3,60 545.3,52" fill="#b3261e"/>
+                <text class="d-bad-text" x="567" y="56">Go / No-go</text>
+
+                <text class="d-text" x="24" y="88">Messagerie pro, fin des clés USB</text>
+                <rect class="p0" x="260" y="76" width="73.3" height="16" rx="4"/>
+                <text class="d-text" x="24" y="114">Planning atelier partagé</text>
+                <rect class="p0" x="260" y="102" width="73.3" height="16" rx="4"/>
+                <text class="d-text" x="24" y="140">Fichier de stock unique</text>
+                <rect class="p0" x="260" y="128" width="73.3" height="16" rx="4"/>
+
+                <text class="d-text" x="24" y="166">Choix de l'ERP et de l'intégrateur</text>
+                <rect class="p1" x="333.3" y="154" width="73.3" height="16" rx="4"/>
+                <text class="d-text" x="24" y="192">Stock, achats et caisse dans l'ERP</text>
+                <rect class="p1" x="406.7" y="180" width="146.7" height="16" rx="4"/>
+                <text class="d-text" x="24" y="218">Connecteur avec le site web</text>
+                <rect class="p1" x="443.3" y="206" width="110" height="16" rx="4"/>
+
+                <text class="d-text" x="24" y="244">Module atelier : devis → facture</text>
+                <rect class="p2" x="553.3" y="232" width="146.7" height="16" rx="4"/>
+                <text class="d-text" x="24" y="270">Export comptable vers Sage</text>
+                <rect class="p2" x="626.7" y="258" width="110" height="16" rx="4"/>
+
+                <text class="d-text" x="24" y="296">CRM : fiche client unique</text>
+                <rect class="p3" x="736.7" y="284" width="110" height="16" rx="4"/>
+                <text class="d-text" x="24" y="322">Tableau de bord de la marge</text>
+                <rect class="p3" x="773.3" y="310" width="146.7" height="16" rx="4"/>
+                <text class="d-text" x="24" y="348">Bilan et ajustements</text>
+                <rect class="p3" x="883.3" y="336" width="36.7" height="16" rx="4"/>
+            </svg>
+        </div>
+        <p class="diagram-note">La bascule de la caisse est prévue hors saison, avec deux semaines de fonctionnement en parallèle de l'ancien système.</p>
+    </section>
+
+    <!-- 8. BUDGET, RISQUES, INDICATEURS -->
+    <section class="cs-section" id="budget">
+        <h2><span class="num">08 · Budget, risques, indicateurs</span>≈ 31 000 € sur 18 mois</h2>
+        <p>Le budget estimé laisse environ 9 000 € de marge sous le plafond. Toutes les lignes reposent sur des hypothèses à confirmer par des devis.</p>
+
+        <div class="cs-table-wrap">
+            <table class="cs-table">
+                <thead><tr><th>Poste</th><th>Hypothèse</th><th>Montant HT</th></tr></thead>
+                <tbody>
+                    <tr><td>Abonnements ERP</td><td>15 utilisateurs × 30 €/mois × 18 mois</td><td>8 100 €</td></tr>
+                    <tr><td>Paramétrage, connecteur web, reprise des données</td><td>18 jours d'intégrateur × 650 €</td><td>11 700 €</td></tr>
+                    <tr><td>Formation des utilisateurs</td><td>6 jours × 650 €</td><td>3 900 €</td></tr>
+                    <tr><td>Matériel</td><td>2 terminaux de caisse, 2 tablettes pour l'atelier</td><td>2 500 €</td></tr>
+                    <tr><td>Messagerie professionnelle</td><td>20 comptes × 6 €/mois × 18 mois</td><td>2 200 €</td></tr>
+                    <tr><td>Réserve pour imprévus</td><td>10 % du sous-total de 28 400 €</td><td>2 840 €</td></tr>
+                    <tr class="total"><td>Total</td><td>Plafond fixé par la direction : 40 000 €</td><td>≈ 31 240 €</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Risques principaux</h3>
+        <div class="cs-table-wrap">
+            <table class="cs-table">
+                <thead><tr><th>Risque</th><th>Mesure de réduction</th></tr></thead>
+                <tbody>
+                    <tr><td>Résistance au changement à l'atelier</td><td>Associer Marc dès le choix de l'outil, nommer un référent atelier, former sur tablette au poste de travail.</td></tr>
+                    <tr><td>Données de stock de mauvaise qualité</td><td>Fichier de stock unique dès la phase 0, inventaire complet avant la bascule.</td></tr>
+                    <tr><td>Dépassement du budget</td><td>Paiement par lots, réserve de 10 %, décision go / no-go à la fin de la phase 1.</td></tr>
+                    <tr><td>Dépendance à l'intégrateur</td><td>Cahier des charges écrit, documentation exigée, Thomas formé comme référent interne.</td></tr>
+                    <tr><td>Interruption des ventes pendant la bascule</td><td>Bascule hors saison, deux semaines en parallèle de l'ancien système.</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Indicateurs de réussite</h3>
+        <div class="cs-table-wrap">
+            <table class="cs-table">
+                <thead><tr><th>Indicateur</th><th>Aujourd'hui</th><th>Objectif à 18 mois</th></tr></thead>
+                <tbody>
+                    <tr><td>Délai d'envoi d'un devis atelier</td><td>≈ 3 jours</td><td>24 heures</td></tr>
+                    <tr><td>Temps de ressaisie comptable</td><td>≈ 2 jours par mois</td><td>0 (export automatique)</td></tr>
+                    <tr><td>Commandes annulées pour rupture</td><td>Fréquentes, non mesurées</td><td>Mesurées dès la phase 0, puis 0</td></tr>
+                    <tr><td>Disponibilité de la marge mensuelle</td><td>Le 20 du mois suivant</td><td>Le 5 du mois suivant</td></tr>
+                    <tr><td>Fichiers clients sur supports amovibles</td><td>Oui</td><td>Aucun</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    </main>
+
+    <footer class="cs-foot">
+        <p>Cas d'étude réalisé par Lourdi Mendes. L'entreprise, les personnes et les chiffres sont fictifs ; les coûts sont des estimations indicatives.</p>
+        <a class="btn btn-primary btn-sm" href="../../#contact">Me contacter</a>
+    </footer>
+</div>
+
+<script>
+    // Onglets des processus
+    const tabs = document.querySelectorAll('[role="tab"]');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => {
+                const selected = t === tab;
+                t.setAttribute('aria-selected', selected);
+                document.getElementById(t.getAttribute('aria-controls')).hidden = !selected;
+            });
+        });
+    });
+</script>
+</body>
+</html>
