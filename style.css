@@ -356,14 +356,38 @@ a { text-decoration:none; color:inherit; }
     display: flex; align-items:center; justify-content:center;
 }
 
-/* Un seul anneau, lent et discret */
+/* Orbites qui tournent autour de la photo */
 .orbit {
     position: absolute;
     border-radius: 50%;
-    border: 1px solid rgba(166,124,78,0.22);
+    border: 1px solid transparent;
+    animation: orbit-spin linear infinite;
 }
 
-.orbit-1 { width: 340px; height: 340px; }
+.orbit-1 {
+    width: 340px; height: 340px;
+    border-color: rgba(201,169,110,0.2);
+    animation-duration: 20s;
+}
+
+.orbit-2 {
+    width: 300px; height: 300px;
+    border-color: rgba(74,222,205,0.15);
+    border-style: dashed;
+    animation-duration: 14s;
+    animation-direction: reverse;
+}
+
+.orbit-dot {
+    position: absolute;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    top: -3px; left: 50%;
+    transform: translateX(-50%);
+}
+
+.orbit-1 .orbit-dot { background: var(--gold); box-shadow: 0 0 8px var(--gold); }
+.orbit-2 .orbit-dot { background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
 
 /* Étiquettes fixes autour de la photo */
 .data-node {
@@ -404,11 +428,45 @@ a { text-decoration:none; color:inherit; }
     width: 240px; height: 240px;
 }
 
+.profile-glow {
+    position: absolute;
+    inset: -20px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(166,124,78,0.18) 0%, transparent 70%);
+    animation: pulse-glow 4s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% { opacity: 0.5; transform: scale(0.95); }
+    50% { opacity: 1; transform: scale(1.05); }
+}
+
+/* Anneau dégradé or / turquoise qui tourne autour de la photo */
 .profile-img-ring {
     position: absolute;
-    inset: -6px;
+    inset: -5px;
     border-radius: 50%;
-    border: 1px solid var(--gold-light);
+    padding: 3px;
+    background: conic-gradient(
+        from 0deg,
+        var(--gold) 0deg,
+        transparent 90deg,
+        var(--cyan) 180deg,
+        transparent 270deg,
+        var(--gold) 360deg
+    );
+    animation: ring-spin 6s linear infinite;
+}
+
+@keyframes ring-spin {
+    to { transform: rotate(360deg); }
+}
+
+.profile-img-ring::after {
+    content:'';
+    position:absolute; inset:3px;
+    border-radius:50%;
+    background: var(--bg-2);
 }
 
 .profile-img {
@@ -471,6 +529,11 @@ a { text-decoration:none; color:inherit; }
     border-color: var(--gold);
     color: var(--gold);
     transform: translateY(-3px);
+}
+
+@keyframes orbit-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 @keyframes fadeUp {
@@ -1197,6 +1260,7 @@ a { text-decoration:none; color:inherit; }
     .footer-grid { grid-template-columns:1fr; gap:2rem; }
     .orbit-container { width:260px; height:260px; }
     .orbit-1 { width:240px; height:240px; }
+    .orbit-2 { width:212px; height:212px; }
     .profile-wrapper { width:190px; height:190px; }
     .data-node { display:none; }
 
